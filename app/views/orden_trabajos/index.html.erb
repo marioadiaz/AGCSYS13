@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Orden trabajos" %>
+
+<h1>Orden trabajos</h1>
+
+<div id="orden_trabajos">
+  <% @orden_trabajos.each do |orden_trabajo| %>
+    <%= render orden_trabajo %>
+    <p>
+      <%= link_to "Show this orden trabajo", orden_trabajo %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New orden trabajo", new_orden_trabajo_path %>

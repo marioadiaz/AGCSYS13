@@ -1,0 +1,112 @@
+<%= form_with(model: orden_trabajo) do |form| %>
+  <% if orden_trabajo.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(orden_trabajo.errors.count, "error") %> prohibited this orden_trabajo from being saved:</h2>
+
+      <ul>
+        <% orden_trabajo.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :trnum, style: "display: block" %>
+    <%= form.number_field :trnum %>
+  </div>
+
+  <div>
+    <%= form.label :trcan, style: "display: block" %>
+    <%= form.number_field :trcan %>
+  </div>
+
+  <div>
+    <%= form.label :trcar, style: "display: block" %>
+    <%= form.date_field :trcar %>
+  </div>
+
+  <div>
+    <%= form.label :clinom, style: "display: block" %>
+    <%= form.text_field :clinom %>
+  </div>
+
+  <div>
+    <%= form.label :papel, style: "display: block" %>
+    <%= form.text_field :papel %>
+  </div>
+
+  <div>
+    <%= form.label :gramaje, style: "display: block" %>
+    <%= form.number_field :gramaje %>
+  </div>
+
+  <div>
+    <%= form.label :colores, style: "display: block" %>
+    <%= form.text_field :colores %>
+  </div>
+
+  <div>
+    <%= form.label :pliego, style: "display: block" %>
+    <%= form.number_field :pliego %>
+  </div>
+
+  <div>
+    <%= form.label :nomprod, style: "display: block" %>
+    <%= form.text_field :nomprod %>
+  </div>
+
+  <div>
+    <%= form.label :fecentr, style: "display: block" %>
+    <%= form.date_field :fecentr %>
+  </div>
+
+  <div>
+    <%= form.label :cam10, style: "display: block" %>
+    <%= form.text_field :cam10 %>
+  </div>
+
+  <div>
+    <%= form.label :cam12, style: "display: block" %>
+    <%= form.text_field :cam12 %>
+  </div>
+
+  <div>
+    <%= form.label :cam24, style: "display: block" %>
+    <%= form.text_field :cam24 %>
+  </div>
+
+  <div>
+    <%= form.label :procesos, style: "display: block" %>
+    <%= form.text_field :procesos %>
+  </div>
+
+  <div>
+    <%= form.label :observaciones, style: "display: block" %>
+    <%= form.text_field :observaciones %>
+  </div>
+
+  <div>
+    <%= form.label :estado_actual, style: "display: block" %>
+    <%= form.text_field :estado_actual %>
+  </div>
+
+  <div>
+    <%= form.label :estado, style: "display: block" %>
+    <%= form.checkbox :estado %>
+  </div>
+
+  <div>
+    <%= form.label :deadline, style: "display: block" %>
+    <%= form.date_field :deadline %>
+  </div>
+
+  <div>
+    <%= form.label :priority, style: "display: block" %>
+    <%= form.text_field :priority %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
