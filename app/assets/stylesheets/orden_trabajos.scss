@@ -1,0 +1,50 @@
+@import "bootstrap";
+
+// Estilo del form
+.form-control.is-valid {
+    border-color: #007bff;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+};
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #2eae00  !important;
+    border-color: #2eae00; /*set the color you want here*/
+}
+
+.glyphicon-trash:hover {
+    background-color:#ff0e0e !important;
+
+}
+.form-check-label {
+  padding-left: 2rem;
+}
+
+.btn {
+  color: #fff !important;
+  font-size: 2rem !important;
+}
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: red; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 1rem; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 1.5rem; /* Increase font size */
+}
+
+#myBtn:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}

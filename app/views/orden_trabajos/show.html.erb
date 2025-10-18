@@ -1,10 +1,59 @@
-<p style="color: green"><%= notice %></p>
+<div class="container my-4">
 
-<%= render @orden_trabajo %>
+  <!-- 🔹 Encabezado -->
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center flex-wrap">
+      <h2 class="m-0">Detalle de la OT</h2>
+      <div class="d-flex flex-wrap gap-2">
+        <%= link_to 'Editar OT', edit_orden_trabajo_path(@orden_trabajo), class: "btn btn-light fw-bold" %>
+        <%= link_to 'Copiar OT', copy_path(@orden_trabajo.id), class: "btn btn-danger fw-bold" %>
+      </div>
+    </div>
 
-<div>
-  <%= link_to "Edit this orden trabajo", edit_orden_trabajo_path(@orden_trabajo) %> |
-  <%= link_to "Back to orden trabajos", orden_trabajos_path %>
+    <!-- 🔸 Cuerpo -->
+    <div class="card-body bg-light">
 
-  <%= button_to "Destroy this orden trabajo", @orden_trabajo, method: :delete %>
+      <% if notice.present? %>
+        <div class="alert alert-success text-center" role="alert">
+          <%= notice %>
+        </div>
+      <% end %>
+
+      <dl class="row">
+        <dt class="col-sm-3 text-end fw-bold">OT:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.trnum %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Cliente:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.clinom %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Producto:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.nomprod %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Cantidad:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.trcan %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Fecha entrada:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.trcar.try(:strftime, "%d-%m-%Y") %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Papel:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.papel.presence || "-" %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Gramaje:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.gramaje.presence || "-" %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Colores:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.colores.presence || "-" %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Pliego:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.pliego.presence || "-" %></dd>
+
+        <dt class="col-sm-3 text-end fw-bold">Fecha entrega:</dt>
+        <dd class="col-sm-9"><%= @orden_trabajo.deadline.try(:strftime, "%d-%m-%Y") %></dd>
+      </dl>
+
+      <div class="text-center mt-4">
+        <%= link_to 'Atrás', root_path, class: "btn btn-dark btn-lg px-5" %>
+      </div>
+    </div>
+  </div>
 </div>

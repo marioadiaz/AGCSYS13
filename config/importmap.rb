@@ -10,5 +10,7 @@ pin "jquery", to: "jquery.js", preload: true
 # config/importmap.rb
 #pin "popper", to: "popper.js", preload: true
 pin "bootstrap", to: "bootstrap.bundle.min.js", preload: true
+#pin "@fortawesome/fontawesome-free", to: "@fortawesome--fontawesome-free.js" # @7.1.0
+#pin "fontawesome-free", to: "fontawesome-free/js/all.min.js"
+pin "@fortawesome/fontawesome-free", to: "fontawesome-free/js/all.js"
 
-#pin "@popperjs/core", to: "@popperjs--core.js" # @2.11.8

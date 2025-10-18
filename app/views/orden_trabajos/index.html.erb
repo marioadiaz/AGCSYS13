@@ -1,16 +1,333 @@
-<p style="color: green"><%= notice %></p>
+<p id="notice"><%= notice %></p>
 
-<% content_for :title, "Orden trabajos" %>
+<div class="d-flex justify-content-between mr-5 ml-2">
+  <div class="ml-3 mb-2">
+    <h3>
+      Planilla de control:
+      <button type="button" class="btn-sm btn-dark">
+        <strong><%= @contador %></strong>
+      </button>
+    </h3>
+  </div>
 
-<h1>Orden trabajos</h1>
-
-<div id="orden_trabajos">
-  <% @orden_trabajos.each do |orden_trabajo| %>
-    <%= render orden_trabajo %>
-    <p>
-      <%= link_to "Show this orden trabajo", orden_trabajo %>
-    </p>
-  <% end %>
+  <div>
+    <h3>
+      <%= link_to '+ Nuevo trabajo', new_orden_trabajo_path, class: 'btn btn-success' %>
+    </h3>
+  </div>
 </div>
 
-<%= link_to "New orden trabajo", new_orden_trabajo_path %>
+
+<!-- Botón para volver arriba -->
+<button onclick="topFunction()" id="myBtn" title="Volver arriba"
+        class="btn btn-danger shadow fw-bold text-white"
+        style="display:none; position:fixed; bottom:40px; right:40px; z-index:9999;
+               border-radius:8px; padding:10px 20px; font-size:16px;">
+  Tira Mi Su
+</button>
+
+
+<!-- Tabla principal -->
+<table class="table table-striped m-2">
+  <thead>
+    <tr>
+      <th>Ot</th>
+      <th>Cliente</th>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Estado actual</th>
+      <th>Proceso</th>
+      <th>Fecha entrega</th>
+      <th>Observaciones</th>
+      <th colspan="3"></th>
+
+    </tr>
+  </thead>
+
+  <tbody id="TablaOrdenesTrabajos">
+    <% @orden_trabajos.each do |orden_trabajo| %>
+      <tr data-controller="orders" data-target="orders.row">
+        <%= simple_form_for orden_trabajo, html: { data: { action: "ajax:success->form#onPostSuccess" } } do |f| %>
+          
+          <!-- OT -->
+          <td>
+            <button type="button"
+                    class="btn btn-info btn-sm"
+                    data-action="click->orders#copy"
+                    data-id="<%= orden_trabajo.id %>">
+              <%= orden_trabajo.trnum %>
+            </button>
+          </td>
+
+          <!-- Cliente -->
+          <td><%= link_to orden_trabajo.clinom, orden_trabajo_path(orden_trabajo) %></td>
+
+          <!-- Producto -->
+          <td><%= orden_trabajo.nomprod.first(30) %></td>
+
+          <!-- Cantidad -->
+          <td width="1" class="text-center" style="width:5%">
+            <%= orden_trabajo.trcan %>
+          </td>
+
+          <!-- Estado actual -->
+          <td width="1" class="text-center" style="width:10%">
+            <%= f.input :estado_actual,
+                        as: :select,
+                        collection: ["Pendiente", "Cliente", "Ismael diseño", "Edu diseño", "Miguel diseño",
+                                     "Gina", "Diseño 3ro", "Control", "CTP", "Impresión", "Terminación", "Empaque"],
+                        label: false,
+                        default: "Pendiente" %>
+          </td>
+
+          <!-- Proceso (multiselect) -->
+          <td>
+            <div class="multi-select"
+                 id="multiSelect_<%= orden_trabajo.id %>"
+                 data-selected="<%= (orden_trabajo.procesos.presence || '').to_s %>">
+              <div class="selected-items" id="selectedItems_<%= orden_trabajo.id %>"></div>
+              <div class="dropdown-arrow">&#9662;</div>
+              <div class="dropdown" id="dropdown_<%= orden_trabajo.id %>">
+                <% OrdenTrabajo::POST.each do |valor| %>
+                  <div data-value="<%= valor %>"><%= valor %></div>
+                <% end %>
+              </div>
+            </div>
+
+            <%= f.input :procesos,
+                        as: :hidden,
+                        input_html: { id: "procesos_#{orden_trabajo.id}" } %>
+          </td>
+          <!-- Campo oculto procesos -->
+          <%= f.input :procesos, as: :hidden, input_html: { id: orden_trabajo.id } %>
+
+          <!-- Fecha entrega -->
+          <td width="1">
+            <%= f.input :deadline,
+                        class: 'datepicker',
+                        default: Date.today + 15.days,
+                        as: :date,
+                        html5: true,
+                        label: false %>
+          </td>
+
+          <!-- Observaciones -->
+          <td width="1" class="text-center">
+            <%= f.input :observaciones,
+                        label: false,
+                        placeholder: orden_trabajo.deadline.try(:strftime, '%d-%m') %>
+          </td>
+
+          <!-- Botón guardar -->
+          <td width="1" class="text-center">
+            <%= f.button :submit, "Confirmar",
+                        data: { disable_with: 'ok' },
+                        class: "btn btn-primary" %>
+          </td>
+
+          <!-- Botón eliminar -->
+          <td class="text-center align-middle" style="width: 70px;">
+            <%= link_to orden_trabajo,
+                        method: :delete,
+                        data: { confirm: '¿Estás seguro/a?' },
+                        remote: true,
+                        class: 'btn btn-danger btn-lg d-flex justify-content-center align-items-center mx-auto' do %>
+              <i class="fa-solid fa-trash fa-lg"></i>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- Campo oculto para reload -->
+<input type="hidden" id="refresh" value="no">
+
+<style>
+  .multi-select {
+  width: 350px;     /* ancho total deseado */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px 40px 10px 10px;
+  background: white;
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+}
+
+.multi-select.active .dropdown {
+  display: block;
+}
+
+.dropdown div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown div:hover {
+  background: #f0f0f0;
+}
+
+.selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-height: 30px;
+  width: 100%;
+}
+
+.selected-items span {
+  background: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.selected-items span i {
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.multi-select.active .dropdown-arrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+
+</style>
+<!-- Scripts generales -->
+
+<script>
+document.addEventListener("turbo:load", () => {
+  document.querySelectorAll("[id^='multiSelect_']").forEach((multiSelect) => {
+    const id           = multiSelect.id.split("_")[1];
+    const dropdown     = document.getElementById(`dropdown_${id}`);
+    const selectedWrap = document.getElementById(`selectedItems_${id}`);
+    const hiddenField  = document.getElementById(`procesos_${id}`);
+
+    // 1) Construir Set con los valores iniciales
+    const initial = (multiSelect.dataset.selected || hiddenField.value || "")
+      .split(",")
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    const selectedValues = new Set(initial);
+
+    // 2) Función para crear un tag
+    function addTag(label, value) {
+      // evita duplicados
+      if (Array.from(selectedValues).includes(value)) return;
+
+      selectedValues.add(value);
+      const tag = document.createElement("span");
+      tag.innerHTML = `${label} <i data-remove="${value}" style="cursor:pointer">&times;</i>`;
+      selectedWrap.appendChild(tag);
+      syncHidden();
+      markDropdown(value, true);
+    }
+
+    // 3) Función para quitar un tag
+    function removeTag(value) {
+      selectedValues.delete(value);
+      [...selectedWrap.children].forEach(el => {
+        const i = el.querySelector("i[data-remove]");
+        if (i && i.dataset.remove === value) el.remove();
+      });
+      syncHidden();
+      markDropdown(value, false);
+    }
+
+    // 4) Sincroniza el hidden con el Set
+    function syncHidden() {
+      hiddenField.value = Array.from(selectedValues).join(",");
+    }
+
+    // 5) Marca/desmarca en el dropdown
+    function markDropdown(value, active) {
+      const item = dropdown.querySelector(`[data-value="${CSS.escape(value)}"]`);
+      if (item) {
+        if (active) {
+          item.classList.add("active");
+        } else {
+          item.classList.remove("active");
+        }
+      }
+    }
+
+    // 6) Render inicial de tags y marcado en dropdown
+    initial.forEach(v => {
+      const item = dropdown.querySelector(`[data-value="${CSS.escape(v)}"]`);
+      const label = item ? item.textContent : v;
+      // crear visual si no existe ya en el wrap
+      if (![...selectedWrap.querySelectorAll("i[data-remove]")].some(i => i.dataset.remove === v)) {
+        const tag = document.createElement("span");
+        tag.innerHTML = `${label} <i data-remove="${v}" style="cursor:pointer">&times;</i>`;
+        selectedWrap.appendChild(tag);
+      }
+      markDropdown(v, true);
+    });
+    syncHidden();
+
+    // 7) Abrir/cerrar dropdown
+    multiSelect.addEventListener("click", (e) => {
+      // evitar cerrar cuando clickeás un tag
+      if (!e.target.closest(".selected-items")) {
+        multiSelect.classList.toggle("active");
+      }
+    });
+
+    // 8) Click en opciones del dropdown
+    dropdown.addEventListener("click", (e) => {
+      const value = e.target.getAttribute("data-value");
+      const label = e.target.textContent;
+      if (!value) return;
+
+      if (selectedValues.has(value)) {
+        // si ya está, lo quitamos (toggle)
+        removeTag(value);
+      } else {
+        addTag(label, value);
+      }
+    });
+
+    // 9) Click en la “x” de un tag
+    selectedWrap.addEventListener("click", (e) => {
+      const valueToRemove = e.target.dataset.remove;
+      if (valueToRemove) removeTag(valueToRemove);
+    });
+
+    // 10) Cerrar si se hace click fuera
+    document.addEventListener("click", (e) => {
+      if (!multiSelect.contains(e.target)) {
+        multiSelect.classList.remove("active");
+      }
+    });
+  });
+});
+</script>
+

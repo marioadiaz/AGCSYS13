@@ -1,0 +1,118 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container ml-2">
+  <div class="row align-items-center">
+    <div class="col-sm mr-5 pr-5">
+      <h3><strong>Listado de trabajos en el taller</strong></h3>
+    </div>
+
+    <div class="col-sm ml-5">
+      <h3>
+        <%= link_to 'Descargar PDF',
+                    listado_path(format: 'pdf'),
+                    class: 'btn btn-success',
+                    target: '_blank' %>
+      </h3>
+    </div>
+
+    <div class="col-sm ml-5 mb-5">
+      <h3>
+        <%= link_to 'Importar Excel',
+                    orden_trabajos_imports_new_path,
+                    class: 'btn btn-primary' %>
+      </h3>
+    </div>
+  </div>
+</div>
+
+<!-- 🔍 Buscador de trabajos -->
+<div class="ml-3 mb-3">
+  <input class="form-control w-25 d-inline-block"
+         id="buscador_datos"
+         type="text"
+         placeholder="Buscar trabajo">
+</div>
+
+<!-- ⬆️ Botón para volver arriba -->
+<button onclick="topFunction()"
+        id="myBtn"
+        title="Ir arriba"
+        class="fa fa-arrow-up btn btn-dark position-fixed"
+        style="bottom: 20px; right: 20px; display: none;">
+  ↑
+</button>
+
+<!-- 📋 Tabla principal -->
+<table class="table table-striped m-2">
+  <thead>
+    <tr>
+      <th>OT</th>
+      <th>Cliente</th>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Observaciones</th>
+      <th>Estado actual</th>
+      <th>Procesos</th>
+      <th>Fecha entrada</th>
+      <th>Fecha entrega</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody id="TablaOrdenesTrabajos">
+    <% @orden_trabajos.each do |orden_trabajo| %>
+      <tr>
+        <td><%= link_to orden_trabajo.trnum, orden_trabajo %></td>
+        <td><%= link_to orden_trabajo.clinom, orden_trabajo %></td>
+        <td><%= link_to orden_trabajo.nomprod, orden_trabajo %></td>
+        <td><%= orden_trabajo.trcan %></td>
+        <td><%= truncate(orden_trabajo.observaciones, length: 50) %></td>
+        <td><%= orden_trabajo.estado_actual %></td>
+        <td><%= orden_trabajo.procesos %></td>
+        <td><%= orden_trabajo.trcar.try(:strftime, "%e %B") %></td>
+        <td><%= orden_trabajo.deadline.try(:strftime, "%e %B") %></td>
+        <td class="text-center">
+          <%= link_to '',
+                      orden_trabajo,
+                      method: :delete,
+                      data: { confirm: '¿Estás seguro/a?' },
+                      remote: true,
+                      class: 'delete_ot btn-lg glyphicon glyphicon-trash text-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- ⚙️ Scripts -->
+<script>
+  // --- Filtro de tabla por búsqueda ---
+  $(document).ready(function() {
+    $("#buscador_datos").on("keyup", function() {
+      const value = $(this).val().toLowerCase();
+      $("#TablaOrdenesTrabajos tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+  });
+
+  // --- Botón "Ir arriba" ---
+  const mybutton = document.getElementById("myBtn");
+
+  window.onscroll = function() {
+    scrollFunction();
+  };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0; // Safari
+    document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera
+  }
+</script>

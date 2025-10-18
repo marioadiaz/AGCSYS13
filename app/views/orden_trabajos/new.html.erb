@@ -1,11 +1,20 @@
-<% content_for :title, "New orden trabajo" %>
+<div class="container my-4">
 
-<h1>New orden trabajo</h1>
+  <!-- Encabezado -->
+  <h2 class="text-center bg-primary text-white py-2 rounded shadow-sm">
+    Nueva Orden de Trabajo
+  </h2>
 
-<%= render "form", orden_trabajo: @orden_trabajo %>
+  <!-- Formulario -->
+  <div class="card shadow mt-4">
+    <div class="card-body">
+      <%= render 'form', orden_trabajo: @orden_trabajo %>
+    </div>
+  </div>
 
-<br>
-
-<div>
-  <%= link_to "Back to orden trabajos", orden_trabajos_path %>
+  <!-- Botón de regreso -->
+  <div class="text-center my-4">
+    <%= link_to 'Atrás', orden_trabajos_path,
+          class: "btn btn-dark btn-lg px-5 shadow-sm" %>
+  </div>
 </div>

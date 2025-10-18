@@ -7,8 +7,14 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
+import "@fortawesome/fontawesome-free"
 
 import * as jquery from "jquery"
+
+import $ from "jquery"
+window.$ = $
+window.jQuery = $
+
 
 // Hacer que jQuery sea global (para plugins que lo requieran)
 window.$ = window.jQuery = jQuery
