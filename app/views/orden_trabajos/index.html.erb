@@ -17,6 +17,34 @@
   </div>
 </div>
 
+<!-- 🔍 Buscador de trabajos -->
+<div class="ml-3 mb-3">
+  <input class="form-control w-25 d-inline-block"
+         id="buscador_datos"
+         type="text"
+         placeholder="Buscar trabajo...">
+</div>
+
+<script type="module">
+  // --- Filtro de tabla por búsqueda ---
+  document.addEventListener("turbo:load", () => {
+    // Espera que jQuery esté cargado y el input exista
+    const $buscador = $("#buscador_datos");
+    const $filas = $("#TablaOrdenesTrabajos tr");
+
+    if ($buscador.length && $filas.length) {
+      $buscador.on("keyup", function() {
+        const value = $(this).val().toLowerCase().trim();
+
+        $filas.each(function() {
+          const textoFila = $(this).text().toLowerCase();
+          $(this).toggle(textoFila.includes(value));
+        });
+      });
+    }
+  });
+</script>
+
 
 <!-- Botón para volver arriba -->
 <button onclick="topFunction()" id="myBtn" title="Volver arriba"
@@ -25,7 +53,6 @@
                border-radius:8px; padding:10px 20px; font-size:16px;">
   Tira Mi Su
 </button>
-
 
 <!-- Tabla principal -->
 <table class="table table-striped m-2">
@@ -329,5 +356,25 @@ document.addEventListener("turbo:load", () => {
     });
   });
 });
+
+  // --- Botón "Ir arriba" ---
+  const mybutton = document.getElementById("myBtn");
+
+  window.onscroll = function() {
+    scrollFunction();
+  };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0; // Safari
+    document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera
+  }
 </script>
 
