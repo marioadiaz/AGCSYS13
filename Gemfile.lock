@@ -183,7 +183,7 @@ GEM
     marcel (1.1.0)
     matrix (0.4.3)
     mini_mime (1.1.5)
-    mini_racer (0.19.0)
+    mini_racer (0.19.1)
       libv8-node (~> 24.1.0.0)
     minitest (5.26.0)
     msgpack (1.8.0)
