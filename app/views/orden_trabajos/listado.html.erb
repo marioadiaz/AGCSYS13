@@ -1,47 +1,62 @@
 <p id="notice"><%= notice %></p>
 
-<div class="container ml-2">
-  <div class="row align-items-center">
-    <div class="col-sm mr-5 pr-5">
-      <h3><strong>Listado de trabajos en el taller</strong></h3>
-    </div>
-
-    <div class="col-sm ml-5">
-      <h3>
-        <%= link_to 'Descargar PDF',
-                    listado_path(format: 'pdf'),
-                    class: 'btn btn-success',
-                    target: '_blank' %>
-      </h3>
-    </div>
-
-    <div class="col-sm ml-5 mb-5">
-      <h3>
-        <%= link_to 'Importar Excel',
-                    orden_trabajos_imports_new_path,
-                    class: 'btn btn-primary' %>
-      </h3>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4 px-3 flex-wrap">
+  <!-- 🏭 Título -->
+  <div class="me-4">
+    <h3 class="mb-0 fw-bold">Listado de trabajos en el Taller</h3>
   </div>
-</div>
+  <!-- 💡 Script de búsqueda -->
+  <script type="module">
+    document.addEventListener("turbo:load", () => {
+      const $buscador = $("#buscador_datos");
+      const $filas = $("#TablaOrdenesTrabajos tr");
 
-<!-- 🔍 Buscador de trabajos -->
-<div class="ml-3 mb-3">
-  <input class="form-control w-25 d-inline-block"
-         id="buscador_datos"
-         type="text"
-         placeholder="Buscar trabajo">
-</div>
+      if ($buscador.length && $filas.length) {
+        $buscador.on("keyup", function() {
+          const value = $(this).val().toLowerCase().trim();
 
-<!-- ⬆️ Botón para volver arriba -->
-<button onclick="topFunction()"
-        id="myBtn"
-        title="Ir arriba"
-        class="fa fa-arrow-up btn btn-dark position-fixed"
-        style="bottom: 20px; right: 20px; display: none;">
-  ↑
+          $filas.each(function() {
+            const textoFila = $(this).text().toLowerCase();
+            $(this).toggle(textoFila.includes(value));
+          });
+        });
+      }
+    });
+  </script>
+  <!-- 🔍 Buscador -->
+  <div class="flex-grow-1 text-center">
+    <input class="form-control d-inline-block w-50"
+           id="buscador_datos"
+           type="text"
+           placeholder="Buscar trabajo...">
+  </div>
+  <!-- 📄 Botón PDF -->
+  <div class="ms-3">
+    <%= link_to 'Descargar PDF',
+                listado_path(format: 'pdf'),
+                class: 'btn btn-success btn-lg',
+                target: '_blank' %>
+  </div>
+  <!-- Botón Descargar Excel -->  
+  <div class="ms-2">
+    <%= link_to 'Descargar Excel',
+            listado_path(format: 'xlsx'),
+            class: 'btn btn-warning btn-lg',
+            target: '_blank' %>
+  </div>          
+  <!-- 📊 Botón Importar Excel -->
+  <div class="ms-2">
+    <%= link_to '📥 Importar Excel',
+            orden_trabajos_imports_new_path,
+            class: 'btn btn-primary btn-lg' %>
+  </div>
+<!-- Botón para volver arriba -->
+<button onclick="topFunction()" id="myBtn" title="Volver arriba"
+        class="btn btn-danger shadow fw-bold text-white"
+        style="display:none; position:fixed; bottom:40px; right:40px; z-index:9999;
+               border-radius:8px; padding:10px 20px; font-size:16px;">
+  Tira Mi Su
 </button>
-
 <!-- 📋 Tabla principal -->
 <table class="table table-striped m-2">
   <thead>
@@ -58,7 +73,6 @@
       <th></th>
     </tr>
   </thead>
-
   <tbody id="TablaOrdenesTrabajos">
     <% @orden_trabajos.each do |orden_trabajo| %>
       <tr>
@@ -83,19 +97,8 @@
     <% end %>
   </tbody>
 </table>
-
 <!-- ⚙️ Scripts -->
 <script>
-  // --- Filtro de tabla por búsqueda ---
-  $(document).ready(function() {
-    $("#buscador_datos").on("keyup", function() {
-      const value = $(this).val().toLowerCase();
-      $("#TablaOrdenesTrabajos tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-      });
-    });
-  });
-
   // --- Botón "Ir arriba" ---
   const mybutton = document.getElementById("myBtn");
 
@@ -115,5 +118,4 @@
     document.body.scrollTop = 0; // Safari
     document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera
   }
-  
 </script>
