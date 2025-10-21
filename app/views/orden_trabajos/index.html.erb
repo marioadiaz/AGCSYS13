@@ -1,50 +1,45 @@
 <p id="notice"><%= notice %></p>
 
-<div class="d-flex justify-content-between mr-5 ml-2">
-  <div class="ml-3 mb-2">
-    <h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <!-- 🧮 Contador -->
+  <div class="ml-3">
+    <h3 class="mb-0">
       Planilla de control:
-      <button type="button" class="btn-sm btn-dark">
+      <button type="button" class="btn btn-dark btn-sm ms-2">
         <strong><%= @contador %></strong>
       </button>
     </h3>
   </div>
+  <!-- 💡 Script de búsqueda -->
+  <script type="module">
+    document.addEventListener("turbo:load", () => {
+      const $buscador = $("#buscador_datos");
+      const $filas = $("#TablaOrdenesTrabajos tr");
 
-  <div>
-    <h3>
-      <%= link_to '+ Nuevo trabajo', new_orden_trabajo_path, class: 'btn btn-success' %>
-    </h3>
+      if ($buscador.length && $filas.length) {
+        $buscador.on("keyup", function() {
+          const value = $(this).val().toLowerCase().trim();
+
+          $filas.each(function() {
+            const textoFila = $(this).text().toLowerCase();
+            $(this).toggle(textoFila.includes(value));
+          });
+        });
+      }
+    });
+  </script>
+  <!-- 🔍 Buscador de trabajos -->
+  <div class="flex-grow-1 text-center">
+    <input class="form-control d-inline-block w-50"
+           id="buscador_datos"
+           type="text"
+           placeholder="Buscar trabajo...">
+  </div>
+  <!-- ➕ Nuevo trabajo -->
+  <div class="me-3">
+    <%= link_to '+ Nuevo trabajo', new_orden_trabajo_path, class: 'btn btn-success btn-lg' %>
   </div>
 </div>
-
-<!-- 🔍 Buscador de trabajos -->
-<div class="ml-3 mb-3">
-  <input class="form-control w-25 d-inline-block"
-         id="buscador_datos"
-         type="text"
-         placeholder="Buscar trabajo...">
-</div>
-
-<script type="module">
-  // --- Filtro de tabla por búsqueda ---
-  document.addEventListener("turbo:load", () => {
-    // Espera que jQuery esté cargado y el input exista
-    const $buscador = $("#buscador_datos");
-    const $filas = $("#TablaOrdenesTrabajos tr");
-
-    if ($buscador.length && $filas.length) {
-      $buscador.on("keyup", function() {
-        const value = $(this).val().toLowerCase().trim();
-
-        $filas.each(function() {
-          const textoFila = $(this).text().toLowerCase();
-          $(this).toggle(textoFila.includes(value));
-        });
-      });
-    }
-  });
-</script>
-
 
 <!-- Botón para volver arriba -->
 <button onclick="topFunction()" id="myBtn" title="Volver arriba"
@@ -53,7 +48,6 @@
                border-radius:8px; padding:10px 20px; font-size:16px;">
   Tira Mi Su
 </button>
-
 <!-- Tabla principal -->
 <table class="table table-striped m-2">
   <thead>
@@ -67,15 +61,12 @@
       <th>Fecha entrega</th>
       <th>Observaciones</th>
       <th colspan="3"></th>
-
     </tr>
   </thead>
-
   <tbody id="TablaOrdenesTrabajos">
     <% @orden_trabajos.each do |orden_trabajo| %>
       <tr data-controller="orders" data-target="orders.row">
-        <%= simple_form_for orden_trabajo, html: { data: { action: "ajax:success->form#onPostSuccess" } } do |f| %>
-          
+        <%= simple_form_for orden_trabajo, html: { data: { action: "ajax:success->form#onPostSuccess" } } do |f| %>        
           <!-- OT -->
           <td>
             <button type="button"
@@ -167,10 +158,8 @@
     <% end %>
   </tbody>
 </table>
-
 <!-- Campo oculto para reload -->
 <input type="hidden" id="refresh" value="no">
-
 <style>
   .multi-select {
   width: 350px;     /* ancho total deseado */
@@ -244,7 +233,6 @@
 .multi-select.active .dropdown-arrow {
   transform: translateY(-50%) rotate(180deg);
 }
-
 
 </style>
 <!-- Scripts generales -->
@@ -377,4 +365,3 @@ document.addEventListener("turbo:load", () => {
     document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera
   }
 </script>
-

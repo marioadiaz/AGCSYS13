@@ -35,21 +35,26 @@ class OrdenTrabajosController < ApplicationController
     end
   end
 
-    def listado
-
+  def listado
     @proximo_vencimiento_ot = OrdenTrabajo.order('deadline ASC, clinom ASC').first(30)
     @orden_trabajos = OrdenTrabajo.all.order('clinom ASC, trnum ASC')
     respond_to do |format|
       format.html
       format.js
       format.json { render json: @orden_trabajos}
-      format.xlsx {
-        response.headers['Content-Disposition'] = "attachment; filename = Listado_ordenes_trabajo.xlsx"
-      }
+      format.xlsx do
+        response.headers['Content-Disposition'] = 'attachment; filename="listado.xlsx"'
+      end
       format.pdf do
         render pdf: 'listado/pdf', pdf: 'Listado',
-        :orientation => 'landscape'
+                  :orientation => 'landscape',
+                  footer: {
+                   right: "Página [page] de [topage]",
+                   font_size: 8,
+                   spacing: 5
+                 }
       end
+      
     end
   end
 
@@ -137,16 +142,16 @@ end
 
 # lISTADO DE LOS TRABAJOS PROXIMOS Y LISTOS PARA ENTRAR EN MÁQUINA
 # -----------------------------------------------------------------
-def planificacionTaller
-     @orden_trabajos = OrdenTrabajo.all
-    respond_to do |format|
-      format.html
-      format.js
-      format.json { render json: @orden_trabajos}
-             format.pdf do
-        render pdf: 'excel/pdf', pdf: 'excel'
-      end
-   end
+def planificacion_taller
+  @orden_trabajos = OrdenTrabajo.all.order(:deadline)
+  respond_to do |format|
+    format.html
+    format.js
+    format.json { render json: @orden_trabajos}
+    format.pdf do
+      render pdf: 'excel/pdf', pdf: 'excel'
+    end
+  end
 end
 
 # lISTADO EN PDF DE LOS TRABAJOS PROXIMOS Y LISTOS PARA ENTRAR EN MÁQUINA
