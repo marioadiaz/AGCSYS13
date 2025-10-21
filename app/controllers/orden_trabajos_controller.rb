@@ -1,6 +1,7 @@
 class OrdenTrabajosController < ApplicationController
   before_action :set_orden_trabajo, only: %i[ show edit update destroy ]
-
+  before_action :listado_trabajo, only:[:digital, :offset1, :offset2, :post1, :post2, :post3, :post4, :post5, :post6, :post7, :proximo_vencer]
+  
   # GET /orden_trabajos or /orden_trabajos.json
   def index
     @contador = OrdenTrabajo.all.count
@@ -170,6 +171,11 @@ def planificacionTallerPDF
 
 # FIN DEL LISTADO DE TRABAJOS PROXIMOS Y LISTOS PARA ENTRAR EN MÁQUINA
 # ----------------------------------------------------------------------------
+def proximo_vencer
+  # Trae las órdenes de trabajo con fecha de entrega (deadline) dentro de los próximos 7 días, por ejemplo
+  @orden_trabajos = OrdenTrabajo
+                      .order(:deadline)
+end
 
   private
     # Use callbacks to share common setup or constraints between actions.
