@@ -1,9 +1,10 @@
 <div class="d-flex justify-content-center">
-  <a class="btn btn-warning text-center my-3"
-     href="/planificacionTallerPDF.pdf"
-     target="_blank">
-    <h4 class="m-0"><strong>DESCARGAR PDF</strong></h4>
-  </a>
+  <div class="text-center my-3">
+    <%= link_to 'Descargar PDF',
+                planificacion_tallerPDF_path(format: 'pdf'),
+                class: 'btn btn-warning btn-lg',
+                target: '_blank' %>
+  </div>
 </div>
 
 <!-- ============================
