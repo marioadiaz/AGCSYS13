@@ -1,7 +1,7 @@
 class OrdenTrabajosController < ApplicationController
   before_action :set_orden_trabajo, only: %i[ show edit update destroy ]
   before_action :listado_trabajo, only:[:digital, :offset1, :offset2, :post1, :post2, :post3, :post4, :post5, :post6, :post7, :proximo_vencer]
-  
+
   # GET /orden_trabajos or /orden_trabajos.json
   def index
     @contador = OrdenTrabajo.all.count
@@ -156,15 +156,20 @@ def planificacion_taller
 end
 
 # lISTADO EN PDF DE LOS TRABAJOS PROXIMOS Y LISTOS PARA ENTRAR EN MÁQUINA
-def planificacionTallerPDF
-    @orden_trabajos = OrdenTrabajo.all.order('clinom ASC')
+def planificacion_tallerPDF
+    @orden_trabajos = OrdenTrabajo.all
     respond_to do |format|
       format.html
       format.js
-      format.json { render json: @orden_trabajos}
+      format.json
       format.pdf do
         render pdf: 'excel/pdf', pdf: 'excel',
-        :orientation => 'landscape'
+                  :orientation => 'landscape',
+                  footer: {
+                   right: "Página [page] de [topage]",
+                   font_size: 8,
+                   spacing: 5
+                 }
       end
     end
   end
