@@ -1,12 +1,8 @@
-<% content_for :title, "Editing orden trabajo" %>
+<% content_for :title, "Editar orden trabajo" %>
 
-<h1>Editing orden trabajo</h1>
+<h2 class="text-center card-header "><strong>Editar orden trabajo</strong></h2>
 
 <%= render "form", orden_trabajo: @orden_trabajo %>
-
-<br>
-
-<div>
-  <%= link_to "Show this orden trabajo", @orden_trabajo %> |
-  <%= link_to "Back to orden trabajos", orden_trabajos_path %>
+<div class="container my-4 text-center">
+  <%= link_to 'Atrás', orden_trabajos_path, class: "btn btn-dark btn-lg w-75" %>
 </div>

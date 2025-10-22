@@ -14,3 +14,5 @@ pin "bootstrap", to: "bootstrap.bundle.min.js", preload: true
 #pin "fontawesome-free", to: "fontawesome-free/js/all.min.js"
 pin "@fortawesome/fontawesome-free", to: "fontawesome-free/js/all.js"
 
+pin "custom/multiselect", to: "custom/multiselect.js"
+pin "custom/scroll_top", to: "custom/scroll_top.js"

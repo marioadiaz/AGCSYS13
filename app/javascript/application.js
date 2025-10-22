@@ -9,6 +9,9 @@ import "controllers"
 import * as bootstrap from "bootstrap"
 import "@fortawesome/fontawesome-free"
 
+import "custom/multiselect"
+import "custom/scroll_top"
+
 import * as jquery from "jquery"
 
 import $ from "jquery"

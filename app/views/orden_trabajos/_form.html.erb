@@ -1,79 +1,107 @@
-<div class="container my-4">
-  <h3 class="fw-bold text-center mb-4"><%= @orden_trabajo.clinom.presence || "Nueva Orden de Trabajo" %></h3>
+<div class="container my-2">
+  <h3 class="fw-bold text-center mb-4">
+    <%= @orden_trabajo.clinom.presence || "Nueva Orden de Trabajo" %>
+  </h3>
 
   <%= simple_form_for @orden_trabajo do |f| %>
     <%= f.error_notification %>
 
-    <div class="row g-3">
-      <div class="col-md-6">
-        <%= f.input :clinom, label: "Cliente" %>
+    <div class="form-inputs cliente-new-form">
+      <!-- Primera fila -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="fw-bold">Cliente</label>
+          <%= f.input :clinom, label: false, required: true, autofocus: true,
+              input_html: { class: "form-control", placeholder: "Cliente" } %>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-bold">Producto</label>
+          <%= f.input :nomprod, label: false, required: true, autofocus: true,
+              input_html: { class: "form-control", placeholder: "Producto" } %>
+        </div>
       </div>
-      <div class="col-md-6">
-        <%= f.input :nomprod, label: "Producto" %>
+
+      <!-- Segunda fila -->
+      <div class="row my-2">
+        <div class="col-md-2">
+          <label class="fw-bold">N° OT</label>
+          <%= f.input :trnum, label: false, required: true,
+              input_html: { class: "form-control", placeholder: "N° OT" } %>
+        </div>
+
+        <div class="col-md-2">
+          <label class="fw-bold">Cantidad</label>
+          <%= f.input :trcan, label: false, required: true,
+              input_html: { class: "form-control", placeholder: "Cantidad" } %>
+        </div>
+
+        <div class="col-md-4">
+          <label class="fw-bold">Papel</label>
+          <%= f.input :papel, label: false, required: true,
+              input_html: { class: "form-control", placeholder: "Papel" } %>
+        </div>
+
+        <div class="col-md-2">
+          <label class="fw-bold">Colores</label>
+          <%= f.input :colores, label: false, required: true,
+              input_html: { class: "form-control", placeholder: "Colores" } %>
+        </div>
+
+        <div class="col-md-2">
+          <label class="fw-bold">Gramaje</label>
+          <%= f.input :gramaje, label: false, required: true,
+              input_html: { class: "form-control", placeholder: "Gramaje" } %>
+        </div>
+      </div>
+
+      <!-- Tercera fila -->
+      <div class="row my-2">
+        <div class="col-md-3">
+          <label class="fw-bold">Pliego</label>
+          <%= f.input :pliego, label: false, required: true,
+              input_html: { class: "form-control", placeholder: "Pliego" } %>
+        </div>
+
+        <div class="col-md-3">
+          <label class="fw-bold">Fecha Ingreso</label>
+          <%= f.input :trcar, as: :date, html5: true, label: false,
+              input_html: { class: "form-control" } %>
+        </div>
+
+        <div class="col-md-3">
+          <label class="fw-bold">Fecha Prometida</label>
+          <%= f.input :deadline, as: :date, html5: true, label: false,
+              input_html: { class: "form-control", value: f.object.deadline || (Date.today + 15.days) } %>
+        </div>
+
+        <div class="col-md-3">
+          <label class="fw-bold">Prioridad</label>
+          <%= f.input :priority, as: :select, label: false,
+              collection: ["Alta", "Media", "Baja"],
+              include_blank: "Seleccionar",
+              input_html: { class: "form-control" } %>
+        </div>
+      </div>
+
+      <!-- Observaciones -->
+      <div class="row my-2">
+        <div class="col-md-8">
+          <%= f.input :observaciones, label: "Observaciones", as: :text,
+              input_html: { class: "form-control", rows: 3, placeholder: "Observaciones" } %>
+        </div>
       </div>
     </div>
 
-    <div class="row g-3 mt-2">
-      <div class="col-md-2">
-        <%= f.input :trnum, label: "N° OT" %>
-      </div>
-      <div class="col-md-2">
-        <%= f.input :trcan, label: "Cantidad" %>
-      </div>
-      <div class="col-md-2">
-        <%= f.input :papel, label: "Papel" %>
-      </div>
-      <div class="col-md-2">
-        <%= f.input :colores, label: "Colores" %>
-      </div>
-      <div class="col-md-2">
-        <%= f.input :gramaje, label: "Gramaje" %>
-      </div>
-    </div>
-
-    <div class="row g-3 mt-4">
-      <div class="col-md-3">
-        <%= f.input :pliego, label: "Pliego" %>
-      </div>
-      <div class="col-md-3">
-        <%= f.input :trcar, as: :date, html5: true, label: "Fecha Ingreso" %>
-      </div>
-      <div class="col-md-3">
-        <%= f.input :deadline, as: :date, html5: true, label: "Fecha Prometida",
-                     input_html: { value: f.object.deadline || (Date.today + 15.days) } %>
-      </div>
-      <div class="col-md-3">
-        <%= f.input :priority, as: :select,
-                     collection: ["Alta", "Media", "Baja"],
-                     label: "Prioridad",
-                     include_blank: "Seleccionar" %>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      <%= f.input :observaciones, label: "Observaciones", input_html: { rows: 4 } %>
-    </div>
-
-    <div class="text-center mt-4">
+    <!-- Botón centrado -->
+    <div class="text-center my-4">
       <%= f.button :submit, "Confirmar", class: "btn btn-primary btn-lg px-5" %>
     </div>
   <% end %>
 </div>
+
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Inicializa el multiselect solo si el plugin está disponible
-    const multiselect = $("#orden_trabajo_procesos_<%= @orden_trabajo.id %>");
-    if (multiselect.length && typeof multiselect.multiselect === "function") {
-      multiselect.multiselect({ allSelectedText: "Todos seleccionados" });
-    }
-
-    // Sincroniza el valor seleccionado con el campo oculto (si existe)
-    multiselect.on("change", function() {
-      const valor = $(this).val();
-      $(`#<%= @orden_trabajo.id %>`).val(valor);
-    });
-
-    // Inicializa datepicker de Bootstrap 5 o jQuery UI si está cargado
+  document.addEventListener("turbo:load", function() {
     if (typeof $.fn.datepicker === "function") {
       $(".datepicker").datepicker({
         format: "dd-mm-yyyy",
