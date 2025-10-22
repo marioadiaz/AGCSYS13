@@ -1,5 +1,5 @@
 <!-- 🔹 Encabezado fijo -->
-<div class="d-flex justify-content-around bg-primary sticky-top my-3 text-white">
+<div class="d-flex justify-content-around bg-primary sticky-top my-3 text-white" style="z-index: 900;">
   <div>
     <h1 class="mt-1"><strong>Baum</strong></h1>
   </div>
@@ -92,6 +92,6 @@
 
   // Redirección automática
   setTimeout(() => {
-    window.location.href = 'http://planillaot.herokuapp.com/post4';
+    window.location.href = "<%= post3_path %>";
   }, 25000);
 </script>
