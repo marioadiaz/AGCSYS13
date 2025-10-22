@@ -1,5 +1,5 @@
 <!-- 🔹 Encabezado -->
-<div class="d-flex justify-content-around bg-primary sticky-top my-3 py-2 text-white">
+<div class="d-flex justify-content-around bg-primary sticky-top my-3 text-white" style="z-index: 900;">
   <div>
     <h1 class="mt-1"><strong>SM</strong></h1>
   </div>
@@ -112,8 +112,8 @@
     }, 1);
   }, 1);
 
-  // Redirección automática después de 30 segundos
-  setTimeout(function() {
-    window.location.href = 'http://planillaot.herokuapp.com/offset2';
-  }, 30000);
+  // Redirección automática a los 25 segundos
+  setTimeout(() => {
+    window.location.href = "<%= offset1_path %>";
+  }, 25000);
 </script>

@@ -157,7 +157,7 @@ end
 
 # lISTADO EN PDF DE LOS TRABAJOS PROXIMOS Y LISTOS PARA ENTRAR EN MÁQUINA
 def planificacion_tallerPDF
-    @orden_trabajos = OrdenTrabajo.all
+    @orden_trabajos = OrdenTrabajo.all.order('clinom ASC')
     respond_to do |format|
       format.html
       format.js

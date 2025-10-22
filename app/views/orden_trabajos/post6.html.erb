@@ -1,5 +1,5 @@
 <!-- 🔹 Encabezado fijo -->
-<div class="d-flex justify-content-around bg-primary sticky-top my-3 text-white flex-wrap">
+<div class="d-flex justify-content-around bg-primary sticky-top my-3 text-white" style="z-index: 900;">
   <div><h1 class="mt-1"><strong>Guillotina</strong></h1></div>
   <div><h1 class="mt-1"><strong>T-Manual</strong></h1></div>
   <div><h1 class="mt-1"><strong>Otros</strong></h1></div>
@@ -125,6 +125,6 @@
 
   // Redirección automática a los 25 segundos
   setTimeout(() => {
-    window.location.href = 'http://planillaot.herokuapp.com/post7';
+    window.location.href = "<%= post6_path %>";
   }, 25000);
 </script>
