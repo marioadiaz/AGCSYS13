@@ -1,5 +1,5 @@
 class OrdenTrabajosController < ApplicationController
-  before_action :set_orden_trabajo, only: %i[ show edit update destroy ]
+  before_action :set_orden_trabajo, only: %i[ show copy edit update destroy ]
   before_action :listado_trabajo, only:[:digital, :offset1, :offset2, :post1, :post2, :post3, :post4, :post5, :post6, :post7, :proximo_vencer]
 
   # GET /orden_trabajos or /orden_trabajos.json
@@ -19,9 +19,11 @@ class OrdenTrabajosController < ApplicationController
   def copy
     @ot_actual = OrdenTrabajo.find(params[:id])
     @orden_trabajo = @ot_actual.dup
-    respond_to do |format|
-      if @orden_trabajo.save
-        format.html { redirect_to orden_trabajos_path, notice: 'La orden de trabajo fue duplicada.' }
+
+    if @orden_trabajo.save
+      respond_to do |format|
+        format.html { redirect_to orden_trabajos_path, notice: "La orden de trabajo fue duplicada." }
+        format.turbo_stream
         format.json do
           render json: {
             id: @orden_trabajo.id,
@@ -33,8 +35,15 @@ class OrdenTrabajosController < ApplicationController
           }
         end
       end
+    else
+      respond_to do |format|
+        format.html { redirect_to orden_trabajos_path, alert: "No se pudo duplicar la orden." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash") }
+      end
     end
   end
+
+
 
   def listado
     @proximo_vencimiento_ot = OrdenTrabajo.order('deadline ASC, clinom ASC').first(30)
@@ -54,8 +63,7 @@ class OrdenTrabajosController < ApplicationController
                    font_size: 8,
                    spacing: 5
                  }
-      end
-      
+      end      
     end
   end
 

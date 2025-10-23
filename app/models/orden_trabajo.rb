@@ -2,7 +2,7 @@ class OrdenTrabajo < ApplicationRecord
   # ----------------------------------------------------------------
   # 🔹 Validaciones básicas (aseguran calidad de datos importados)
   # ----------------------------------------------------------------
-  validates :trnum, presence: true, uniqueness: true
+  
   validates :clinom, presence: true
   validates :nomprod, presence: true
   validates :trcan, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
