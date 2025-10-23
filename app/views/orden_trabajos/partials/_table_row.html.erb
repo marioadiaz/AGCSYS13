@@ -1,0 +1,9 @@
+<tr id="orden_trabajo_<%= orden_trabajo.id %>">
+  <td><%= orden_trabajo.trnum %></td>
+  <td><%= orden_trabajo.clinom %></td>
+  <td><%= orden_trabajo.nomprod %></td>
+  <td><%= orden_trabajo.trcan %></td>
+  <td><%= orden_trabajo.estado_actual %></td>
+  <td><%= orden_trabajo.procesos %></td>
+  <td><%= orden_trabajo.fecentr.try(:strftime, "%d-%m-%Y") %></td>
+</tr>

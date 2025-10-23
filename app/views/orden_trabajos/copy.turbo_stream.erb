@@ -1,0 +1,7 @@
+<%= turbo_stream.prepend "TablaOrdenesTrabajos",
+      partial: "orden_trabajos/partials/table_row",
+      locals: { orden_trabajo: @orden_trabajo } %>
+
+<%= turbo_stream.prepend "flash",
+      partial: "layouts/flash",
+      locals: { notice: "La orden de trabajo fue duplicada correctamente." } %>
