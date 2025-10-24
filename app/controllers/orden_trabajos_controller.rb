@@ -43,8 +43,6 @@ class OrdenTrabajosController < ApplicationController
     end
   end
 
-
-
   def listado
     @proximo_vencimiento_ot = OrdenTrabajo.order('deadline ASC, clinom ASC').first(30)
     @orden_trabajos = OrdenTrabajo.all.order('clinom ASC, trnum ASC')
@@ -110,12 +108,17 @@ class OrdenTrabajosController < ApplicationController
 
   # DELETE /orden_trabajos/1 or /orden_trabajos/1.json
   def destroy
-    @orden_trabajo.destroy!
+    @orden_trabajo = OrdenTrabajo.find(params[:id])
+    puts "EN DESTROY---------------@orden_trabajo.attributes : "
+    puts @orden_trabajo.attributes
+
+    @orden_trabajo.destroy
+
 
     respond_to do |format|
-      format.json { head :no_content }
-      format.js { render :layout => false }
-    end  
+      format.turbo_stream
+      format.html { redirect_to orden_trabajos_path, notice: "Orden eliminada correctamente." }
+    end
   end
 
 # ESTE SECTOR DEL CONTROLADOR ES PARA LAS DIFERENTES VIEWS DE IMPRESIÓN Y POST

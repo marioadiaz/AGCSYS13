@@ -65,7 +65,7 @@
   </thead>
   <tbody id="TablaOrdenesTrabajos">
     <% @orden_trabajos.each do |orden_trabajo| %>
-      <tr data-controller="orders" data-target="orders.row">
+      <tr id="<%= dom_id(orden_trabajo) %>" data-controller="orders" data-target="orders.row">
         <%= simple_form_for orden_trabajo, html: { data: { action: "ajax:success->form#onPostSuccess" } } do |f| %>        
           <!-- OT -->
           <td>
@@ -145,13 +145,12 @@
 
           <!-- Botón eliminar -->
           <td class="text-center align-middle" style="width: 70px;">
-            <%= link_to orden_trabajo,
-                        method: :delete,
-                        data: { confirm: '¿Estás seguro/a?' },
-                        remote: true,
+            <%= link_to orden_trabajo_path(orden_trabajo),
+                        data: { turbo_method: :delete, turbo_confirm: '¿Estás seguro/a?' },
                         class: 'btn btn-danger btn-lg d-flex justify-content-center align-items-center mx-auto' do %>
               <i class="fa-solid fa-trash fa-lg"></i>
             <% end %>
+
           </td>
         <% end %>
       </tr>
