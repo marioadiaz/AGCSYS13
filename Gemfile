@@ -19,7 +19,7 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 
 # --- Formularios y componentes UI ---
-gem "simple_form", "~> 5.3"
+gem "simple_form", "~> 5.4"
 gem "font-awesome-sass", "~> 6.6"
 gem "autoprefixer-rails"
 
